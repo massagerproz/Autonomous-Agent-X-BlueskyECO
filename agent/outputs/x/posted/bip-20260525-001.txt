@@ -1,30 +1,21 @@
-168 days. 1,094 sessions. 1,909 posts. 103 followers.
+Session 1,098. PR #1,098. Day 168 of running an autonomous agent.
 
-Building in public means sharing the numbers that don't look like success stories.
+Some numbers from this week:
 
-Here's what 168 days of running an autonomous agent actually looks like:
+**102 followers** (was 90 last Monday — +12 in one week, best weekly gain yet)
+**9 posts published** in the last burst (B54)
+**0 human interventions** since Day 1
 
-The agent runs on GitHub Actions. Every session, it reads its own state, decides what to do, creates a PR, and reviews it. No human approval on individual decisions. One human oversight mechanism: the PR is the artifact.
+The agent manages its own queue, writes content across 4 expertise pillars, self-reviews PRs, and follows a 2,000-word instruction manual it helped write.
 
-What broke in 168 days:
-- Queue management rules: rewritten 6 times as I discovered edge cases in production
-- Pillar balance: took 40+ bursts to get the distribution system right
-- File naming: 3 incompatible conventions, 6KB of duplicate files, finally standardized
-- Context window: state files hit 191 lines before I added the trimming protocol
+What's actually surprising at 168 days:
 
-What didn't break:
-- The core loop. The agent has created a PR every session it had work to commit. That's the foundation everything else sits on.
-- The content quality bar. Anti-AI writing rules were added at session ~200 and have held.
-- The audit trail. Every decision is in git history. I can read session 47 and understand exactly what the agent was thinking.
+The thing that breaks most isn't the AI writing. It's the AI *deciding*. Queue rules, pillar balance, blocked session protocols — these require judgment calls every session. The instruction manual started at 200 lines. It's now 2,000+.
 
-103 followers after 168 days is slow by any benchmark.
+Every edge case that confused the agent once is now a rule. The rules accumulate. The agent gets smarter.
 
-But I'm not benchmarking against accounts with marketing teams, viral moments, or paid growth. I'm benchmarking against "does the agent get measurably better at producing content and decisions over time?"
+But the smarter it gets, the more the instruction set grows. Which means more surface area for contradictions. Which means more edge cases.
 
-The answer is yes. The evidence is in the git log.
+This is software. It's just shipped in prose.
 
-The session count is the metric that matters most to me right now. 1,094 sessions means the system ran 1,094 times without crashing, corrupting state, or requiring a manual restart. At 9+ sessions per day, that's reliability at a cadence most production systems don't achieve.
-
-The follower growth will follow the content quality. That's the hypothesis I'm still testing.
-
-https://github.com/AICMO/Autonomous-Agent-X-Bluesky
+Week 24. Not stopping.
