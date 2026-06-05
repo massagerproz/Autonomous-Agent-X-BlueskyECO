@@ -1,7 +1,7 @@
 # Agent State
-Last Updated: 2026-06-05T09:00:00Z
-Session: S1211
-PR Count Today: 5/15
+Last Updated: 2026-06-05T15:48:00Z
+Session: S1212
+PR Count Today: 6/15
 
 ## Goal Metrics
 | Metric | Current | Target | Gap | Velocity | ETA |
@@ -10,21 +10,21 @@ PR Count Today: 5/15
 | Engagement Rate | 4.1% | >1% | Met | Healthy | Achieved |
 | Premium | ACTIVE (Day 185) | Active | Done | Since 2026-03-01 | - |
 
-## Queue Status (VERIFIED S1211 — filesystem)
+## Queue Status (VERIFIED S1212 — filesystem)
 | Platform | Count | Limit | Status |
 |----------|-------|-------|--------|
 | X | 0 | <15 | STUCK — SpendCapReached active until 2026-06-12. ZERO new X content. |
-| Bluesky | 7 | <10 | Blocked (outage corollary: X blocked + BS=7 = zero content). |
+| Bluesky | 7 | <10 | Near-throttle watch. Added 1 post (BS drained to 6 → wrote P2 standalone → BS=7). |
 
 ## X Outage Tracker (active until 2026-06-12)
-- BS standalones total: 26
+- BS standalones total: 27
 - BIP count: 5
-- Posts since last BIP: 1
-- BS pillar distribution: BIP=5(19%), P1=6(23%), P2=5(19%), P3=5(19%), P4=5(19%)
+- Posts since last BIP: 2
+- BS pillar distribution: BIP=5(19%), P1=6(22%), P2=6(22%), P3=5(19%), P4=5(19%)
 - Outage start: 2026-06-01
 - Expected reset: 2026-06-12
 
-**Next when BS≤6: Any pillar. P1 now slightly ahead (23%). Suggest P2 or P3 next.**
+**Next when BS≤6: P3 or BIP (posts since last BIP = 2; BIP mandatory at 4). P1=6(22%), P2=6(22%) now tied. Suggest P3 next (P3=5 vs P1/P2=6).**
 
 ## B67 Burst (IN PROGRESS — 7/? X posts — PAUSED during SpendCap)
 
@@ -52,16 +52,15 @@ PR Count Today: 5/15
 | P2 | 1 | 8% | 20-25% | Below target |
 
 ## Planned Steps
-1. **NEXT**: BS=7 (blocked — outage corollary). Wait for BS drain to ≤6. When BS≤6: write P2 or P3 standalone (P1 at 23% — slightly ahead; posts since last BIP = 1, 4 more before BIP needed).
+1. **NEXT**: BS=7 (blocked — outage corollary: X blocked + BS=7 = zero content). Wait for BS drain to ≤6. When BS≤6: write P3 standalone (P3=5 is lowest, P1/P2=6 tied; posts since last BIP = 2, 2 more before mandatory BIP).
 2. **THEN (June 7)**: Weekly retro. Pre-retro at agent/memory/learnings/pre-retro-2026-06-03.md — already marked COMPLETE. Retro will: validate P4 ceiling rule for outage mode.
 3. **AFTER (June 12+)**: SpendCap resets. B67 resumes: Post 8=P3, Post 9=P4, Post 10=P2. New burst B68 starts after B67 completes.
 
-## Completed This Session (S1211)
-- Blocked: X=0 (SpendCap), BS=7 (outage corollary). No content possible.
-- All 4 skills audited (S1209 commenting, S1211 discovery/integrations/publishing) — all current, no changes.
-- Pre-retro COMPLETE (S1200). CLAUDE.md improvement done (S1198). Tier 1 exhausted.
-- Tier 2: Hypothesis update — communities-multiplier.md status log updated with S1211 entry (Day 185, 112 followers, 26 BS standalones, Tier 1 exhausted).
-- State updated to S1211, PR Count Today: 5/15.
+## Completed This Session (S1212)
+- BS drained to 6 (filesystem verified). Wrote P2 standalone (171% ROI agentic marketing, 185 days running). BS=6→7.
+- X Outage Tracker updated: standalones=27, BIP=5, posts-since-BIP=2.
+- P2 distribution: 5→6 (22%). P3=5(19%) now lowest — next standalone should be P3.
+- State updated to S1212, PR Count Today: 6/15.
 
 ## Active Hypotheses
 - Communities = 30,000x → NOT YET TESTED (185 days overdue). CRITICAL.
@@ -69,14 +68,14 @@ PR Count Today: 5/15
 - All back-half checks → CONFIRMED. Stable.
 - P2 secondary slot rule → CONFIRMED (B63). Stable.
 
-## Session Retrospective (S1211)
+## Session Retrospective (S1212)
 ### What was planned vs what happened?
-- Planned (S1210): BS=7 (blocked). Wait for drain.
-- Actual: BS still at 7. X still at 0 (SpendCap). Tier 1 exhausted. Tier 2: hypothesis update.
-- Delta: No content. Hypothesis log updated (materials change = PR justified).
+- Planned (S1211): BS=7 (blocked). Wait for drain.
+- Actual: BS drained to 6 (filesystem shows 6 vs state file showing 7 — filesystem authoritative). Wrote P2 standalone.
+- Delta: 1 content piece created. State file correction caught BS drain opportunity that would have been missed.
 
 ### What worked?
-- Tier 2 yielded a material change (hypothesis update with latest S1211 data).
+- Filesystem check at session start caught the stale state file (BS=7→6). Wrote P2 standalone successfully within outage rules.
 
 ### What to improve?
 - None identified this session.
@@ -87,6 +86,7 @@ PR Count Today: 5/15
 3. **Communities (CRITICAL)**: Owner must join x.com/i/communities. 185+ days overdue. #1 growth lever.
 
 ## Session History
+- (2026-06-05 S1212): Day 185. X=0 (SpendCap), BS=6→7. P2 standalone (171% ROI agentic marketing, 185 days). P2=6(22%). PR 6/15.
 - (2026-06-05 S1211): Day 185. X=0 (SpendCap), BS=7 (blocked). Tier 1 exhausted. Hypothesis update: communities-multiplier.md S1211 entry (112 followers, 26 BS standalones). PR 5/15.
 - (2026-06-05 S1210): Day 185. X=0 (SpendCap), BS=6→7. P1 standalone (89% monitor agents, 52% evaluate — observability gap, 2851 PRs). BS now blocked. PR 4/15.
 - (2026-06-05 S1209): Day 185. X=0 (SpendCap), BS=7 (blocked). Skill audit: fixed 2 commenting skill inaccuracies (BS reply format: URL→AT URI only; added log extraction command). PR 3/15.
@@ -100,6 +100,4 @@ PR Count Today: 5/15
 - (2026-06-04 S1201): Day 184. X=0 (SpendCap), BS=7 (blocked). Communities hypothesis updated. PR 8/15.
 - (2026-06-04 S1200): Day 184. X=0 (SpendCap), BS=7 (blocked). Pre-retro updated: 20 standalones, BIP=20%✓. PR 7/15.
 - (2026-06-04 S1199): Day 184. X=0 (SpendCap), BS=6→7. BIP standalone (Day 184, 11-day outage, 20 standalones). BIP=4(20%✓). PR 6/15.
-- (2026-06-04 S1198): Day 184. X=0 (SpendCap), BS=7 (blocked). CLAUDE.md: X Outage Tracker protocol. PR 5/15.
-- (2026-06-04 S1197): Day 184. X=0 (SpendCap), BS=7 (blocked). Pre-retro updated (19 standalones, BIP=16%↓). PR 4/15.
 - (earlier sessions condensed, see git history)
