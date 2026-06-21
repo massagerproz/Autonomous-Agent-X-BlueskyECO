@@ -1,6 +1,59 @@
 import streamlit as st
 import json
 
+def inject_custom_css():
+    """Injects custom CSS for Framer-like animations and microinteractions."""
+    st.markdown("""
+        <style>
+        /* Framer-like Fade In Up Animation for main containers */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stMarkdown, .stButton, .stTextArea {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Microinteraction: Button Hover Scale */
+        .stButton > button {
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .stButton > button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .stButton > button:active {
+            transform: scale(0.98);
+        }
+
+        /* Microinteraction: Pulse for QA Alerts (Errors) */
+        @keyframes pulseAlert {
+            0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 75, 75, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); }
+        }
+        div[data-testid="stException"], div[data-testid="stError"] {
+            animation: pulseAlert 2s infinite;
+            border-radius: 8px;
+        }
+
+        /* Smooth transition for text areas */
+        .stTextArea textarea {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stTextArea textarea:focus {
+            box-shadow: 0 0 0 2px rgba(255, 75, 75, 0.2);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
 def mock_ai_extract(text):
     """Mock AI extraction for demo purposes with confidence scores"""
     evidence = []
@@ -92,6 +145,10 @@ def qa_review(report):
 
 def main():
     st.set_page_config(page_title="CLEAR Climate Copilot", layout="wide")
+
+    # Inject animations
+    inject_custom_css()
+
     st.title("CLEAR Climate Copilot")
     st.subheader("Turn scattered project information into structured reporting evidence")
 

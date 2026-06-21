@@ -41,3 +41,7 @@ pytest clear_climate_os/test_app.py
 - AI output is draft: Checkboxes require human approval before tracking.
 - Grounded facts: The report draft strictly pulls from the evidence tracker.
 - Included sample data and tests for easy demo execution.
+
+## UI & UX Enhancements
+- Includes custom CSS injecting Framer-like motion animations.
+- Features microinteractions such as button hover scaling and subtle pulsing alerts for QA flagging, improving overall user experience.
