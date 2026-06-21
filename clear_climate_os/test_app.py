@@ -9,11 +9,17 @@ def test_mock_ai_extract_with_matches():
     assert 'Risk' in categories
     assert 'Decision' in categories
 
+    # Check for presence of new confidence field
+    for e in evidence:
+        assert 'confidence' in e
+        assert isinstance(e['confidence'], float)
+
 def test_mock_ai_extract_no_matches():
     text = "Just a regular meeting with nothing specific."
     evidence = mock_ai_extract(text)
     assert len(evidence) == 1
     assert evidence[0]['category'] == 'Activity Update'
+    assert 'confidence' in evidence[0]
 
 def test_generate_report_empty():
     report = generate_report([])
