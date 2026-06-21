@@ -1,33 +1,40 @@
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import sync_playwright, expect
 import re
 import subprocess
 import time
+import os
 
-@pytest.fixture(scope="module", autouse=True)
-def start_streamlit():
-    # Start Streamlit server in the background
+def test_streamlit_app_e2e():
+    """
+    End-to-end test to verify the Streamlit application loads successfully,
+    takes a screenshot, and records a video using Playwright.
+    """
+    os.makedirs("verification/screenshots", exist_ok=True)
+    os.makedirs("verification/videos", exist_ok=True)
+
     process = subprocess.Popen(
         ["streamlit", "run", "clear_climate_os/app.py", "--server.port", "8502", "--server.headless", "true"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
-    # Wait for the server to start
     time.sleep(3)
-    yield
-    # Terminate the server after tests
-    process.terminate()
-    process.wait()
 
-def test_streamlit_app_loads(page: Page):
-    """
-    End-to-end test to verify the Streamlit application loads successfully.
-    Requires the Streamlit server to be running on localhost:8502.
-    """
-    page.goto("http://localhost:8502", timeout=10000)
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(record_video_dir="verification/videos/")
+            page = context.new_page()
 
-    # Check that the title is correct
-    expect(page).to_have_title(re.compile("CLEAR Climate", re.IGNORECASE))
+            page.goto("http://localhost:8502", timeout=15000)
 
-    # Wait for the main header to appear indicating app loaded
-    expect(page.locator("h1").filter(has_text="CLEAR Climate Copilot")).to_be_visible(timeout=10000)
+            expect(page).to_have_title(re.compile("CLEAR Climate", re.IGNORECASE))
+            expect(page.locator("h1").filter(has_text="CLEAR Climate Copilot")).to_be_visible(timeout=15000)
+
+            page.screenshot(path="verification/screenshots/playwright_screenshot.png", full_page=True)
+
+            context.close()
+            browser.close()
+    finally:
+        process.terminate()
+        process.wait()

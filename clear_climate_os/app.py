@@ -375,3 +375,17 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# --- Vercel Serverless Function Handler ---
+# Vercel's @vercel/python requires an `app`, `application`, or `handler` object.
+# Since Streamlit runs its own Tornado server, this dummy handler is provided
+# to satisfy the Vercel build process.
+from http.server import BaseHTTPRequestHandler
+
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type','text/plain')
+        self.end_headers()
+        self.wfile.write('Streamlit app deployed. Please note: Streamlit requires WebSockets which are not natively supported by Vercel Serverless Functions.'.encode('utf-8'))
+        return
