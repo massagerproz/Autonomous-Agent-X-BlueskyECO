@@ -21,14 +21,22 @@ def mock_ai_extract(text):
             "source": "Meeting Notes",
             "approved": False
         })
-    if "budget" in text.lower() or "approved" in text.lower():
+    if "budget" in text.lower() or "approved" in text.lower() or "funding" in text.lower():
         evidence.append({
             "id": 3,
             "category": "Decision",
-            "content": "Additional budget of $5k approved for weatherproofing.",
+            "content": "Additional funding/budget of $5k approved for weatherproofing.",
             "source": "Meeting Notes",
             "approved": False
         })
+    if "water" in text.lower():
+         evidence.append({
+            "id": 5,
+            "category": "Activity Update",
+            "content": "Installed new water filtration system.",
+            "source": "Meeting Notes",
+            "approved": False
+         })
 
     # If no keywords match, just provide some generic parsed evidence
     if not evidence:
@@ -49,18 +57,22 @@ def generate_report(evidence_tracker):
 
     report = "### Donor Report Draft\n\n"
     report += "**Project Activities & Updates:**\n"
+    i = 1
     for e in evidence_tracker:
         if e['category'] in ['Activity Update', 'Decision']:
-             report += f"- {e['content']}\n"
+             report += f"{i}. {e['content']}\n"
+             i += 1
 
     report += "\n**Risks & Challenges:**\n"
+    i = 1
     for e in evidence_tracker:
         if e['category'] == 'Risk':
-             report += f"- {e['content']}\n"
+             report += f"{i}. {e['content']}\n"
+             i += 1
 
     # Inject a hallucinated claim to demonstrate QA flagging
     report += "\n**Impact:**\n"
-    report += "- Reduced carbon emissions by 500 tons this month. (UNSUPPORTED CLAIM)\n"
+    report += "1. Reduced carbon emissions by 500 tons this month. (UNSUPPORTED CLAIM)\n"
 
     return report
 
@@ -109,6 +121,7 @@ def main():
             st.success("Notes processed! See extracted evidence below.")
 
     if st.session_state.get('notes_processed'):
+        st.divider()
         st.header("Step 2 & 3: AI Extraction & Human Approval")
         st.markdown("Review the extracted evidence. **AI output must be treated as draft output, not truth.** Human approval is required before evidence enters the tracker.")
 
@@ -143,6 +156,7 @@ def main():
 
                     st.success(f"Saved {len(approved_ids)} items to Evidence Tracker!")
 
+        st.divider()
         # Display Evidence Tracker
         if st.session_state['evidence_tracker']:
             st.header("Evidence Tracker")
@@ -154,6 +168,7 @@ def main():
                 st.session_state['draft_report'] = None
                 st.rerun()
 
+            st.divider()
             st.header("Step 4 & 5: Report Generation & QA")
             if st.button("Generate Donor Report Draft"):
                 report = generate_report(st.session_state['evidence_tracker'])
@@ -172,6 +187,7 @@ def main():
                 else:
                      st.success("QA Review Passed: No unsupported claims found.")
 
+                st.divider()
                 st.header("Step 6: Export")
                 st.download_button(
                     label="Download Report as TXT",
