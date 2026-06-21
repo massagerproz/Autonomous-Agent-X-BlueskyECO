@@ -2,14 +2,32 @@ import streamlit as st
 import json
 
 def inject_custom_css():
-    """Injects custom CSS for Framer-like animations and microinteractions."""
+    """Injects custom CSS for Glassmorphism UI and Staggered Animations."""
     st.markdown("""
         <style>
-        /* Framer-like Fade In Up Animation for main containers */
-        @keyframes fadeInUp {
+        /* Sleek Application Background */
+        .stApp {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Glassmorphism Container Classes */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            margin-bottom: 20px;
+        }
+
+        /* Framer-like Staggered Fade In Up */
+        @keyframes staggerFadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -17,45 +35,67 @@ def inject_custom_css():
             }
         }
 
-        .stMarkdown, .stButton, .stTextArea {
-            animation: fadeInUp 0.6s ease-out forwards;
+        .stMarkdown, .stTextArea {
+            animation: staggerFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Microinteraction: Button Hover Scale */
+        /* Sequential delays for child elements to create stagger effect */
+        div[data-testid="stForm"] > div > div:nth-child(1) { animation-delay: 0.1s; }
+        div[data-testid="stForm"] > div > div:nth-child(2) { animation-delay: 0.2s; }
+        div[data-testid="stForm"] > div > div:nth-child(3) { animation-delay: 0.3s; }
+        div[data-testid="stForm"] > div > div:nth-child(4) { animation-delay: 0.4s; }
+        div[data-testid="stForm"] > div > div:nth-child(5) { animation-delay: 0.5s; }
+
+        /* Sleek Button Styling (Glassmorphic) */
         .stButton > button {
-            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            color: #333;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         .stButton > button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.9);
         }
         .stButton > button:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
-        /* Microinteraction: Pulse for QA Alerts (Errors) */
-        @keyframes pulseAlert {
-            0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 75, 75, 0); }
+        /* Subtle Pulse for QA Alerts (Errors) */
+        @keyframes subtlePulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0.2); }
+            50% { box-shadow: 0 0 0 8px rgba(255, 75, 75, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 75, 75, 0); }
         }
         div[data-testid="stException"], div[data-testid="stError"] {
-            animation: pulseAlert 2s infinite;
-            border-radius: 8px;
+            animation: subtlePulse 2.5s infinite;
+            border-radius: 12px;
+            background: rgba(255, 230, 230, 0.8);
+            border: 1px solid rgba(255, 75, 75, 0.2);
         }
 
-        /* Smooth transition for text areas */
+        /* Text Area Glassmorphism */
         .stTextArea textarea {
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
         .stTextArea textarea:focus {
-            box-shadow: 0 0 0 2px rgba(255, 75, 75, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(100, 150, 255, 0.3);
+            border-color: transparent;
         }
         </style>
     """, unsafe_allow_html=True)
 
 def mock_ai_extract(text):
-    """Mock AI extraction for demo purposes with confidence scores"""
+    """Mock AI extraction for demo purposes with confidence scores and reasoning"""
     evidence = []
 
     if "solar" in text.lower() or "panels" in text.lower():
@@ -65,6 +105,7 @@ def mock_ai_extract(text):
             "content": "Installed 50 solar panels at the community center.",
             "source": "Meeting Notes",
             "confidence": 0.95,
+            "reasoning": "Explicit mention of 'solar panels' and quantity '50'.",
             "approved": False
         })
     if "delay" in text.lower() or "weather" in text.lower():
@@ -74,6 +115,7 @@ def mock_ai_extract(text):
             "content": "Heavy rain causing delays in panel installation.",
             "source": "Meeting Notes",
             "confidence": 0.88,
+            "reasoning": "Keywords 'heavy rain' and 'delay' indicate a schedule risk.",
             "approved": False
         })
     if "budget" in text.lower() or "approved" in text.lower() or "funding" in text.lower():
@@ -83,6 +125,7 @@ def mock_ai_extract(text):
             "content": "Additional funding/budget of $5k approved for weatherproofing.",
             "source": "Meeting Notes",
             "confidence": 0.92,
+            "reasoning": "Financial figure '$5k' linked with 'approved' denotes a financial decision.",
             "approved": False
         })
     if "water" in text.lower():
@@ -92,8 +135,31 @@ def mock_ai_extract(text):
             "content": "Installed new water filtration system.",
             "source": "Meeting Notes",
             "confidence": 0.85,
+            "reasoning": "Mention of 'water filtration' implies infrastructure activity.",
             "approved": False
          })
+
+    # New Extractions: Stakeholders and Deadlines
+    if "mayor" in text.lower() or "community leaders" in text.lower() or "ngo" in text.lower():
+        evidence.append({
+            "id": 6,
+            "category": "Stakeholder Input",
+            "content": "Community leaders and local officials engaged.",
+            "source": "Meeting Notes",
+            "confidence": 0.89,
+            "reasoning": "Identified specific local governance or community representative roles.",
+            "approved": False
+        })
+    if "by next week" in text.lower() or "deadline" in text.lower() or "october" in text.lower():
+        evidence.append({
+            "id": 7,
+            "category": "Deadline",
+            "content": "Target completion set for late October.",
+            "source": "Meeting Notes",
+            "confidence": 0.91,
+            "reasoning": "Temporal markers indicating a required timeframe constraint.",
+            "approved": False
+        })
 
     if not evidence:
          evidence.append({
@@ -102,6 +168,7 @@ def mock_ai_extract(text):
             "content": "Project kickoff meeting completed.",
             "source": "Meeting Notes",
             "confidence": 0.60,
+            "reasoning": "Fallback extraction due to lack of specific domain keywords.",
             "approved": False
         })
 
@@ -127,6 +194,13 @@ def generate_report(evidence_tracker):
              report += f"{i}. {e['content']}\n"
              i += 1
 
+    report += "\n**Stakeholder Engagement & Timelines:**\n"
+    i = 1
+    for e in evidence_tracker:
+        if e['category'] in ['Stakeholder Input', 'Deadline']:
+             report += f"{i}. [{e['category']}] {e['content']}\n"
+             i += 1
+
     # Inject a hallucinated claim to demonstrate QA flagging
     report += "\n**Impact:**\n"
     report += "1. Reduced carbon emissions by 500 tons this month. (UNSUPPORTED CLAIM)\n"
@@ -146,7 +220,7 @@ def qa_review(report):
 def main():
     st.set_page_config(page_title="CLEAR Climate Copilot", layout="wide")
 
-    # Inject animations
+    # Inject animations and glassmorphism UI
     inject_custom_css()
 
     st.title("CLEAR Climate Copilot")
@@ -172,6 +246,7 @@ def main():
     if 'extracted_evidence' not in st.session_state:
         st.session_state['extracted_evidence'] = []
 
+    st.markdown('<div class="glass-container">', unsafe_allow_html=True)
     st.header("Step 1: Input Meeting Notes or Updates")
     notes_input = st.text_area("Paste meeting notes, activity updates, or stakeholder inputs here:", height=150)
 
@@ -183,9 +258,10 @@ def main():
             # Load new evidence, resetting edits
             st.session_state['extracted_evidence'] = mock_ai_extract(notes_input)
             st.success("Notes processed! See extracted evidence below.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
     if st.session_state.get('notes_processed'):
-        st.divider()
+        st.markdown('<div class="glass-container">', unsafe_allow_html=True)
         st.header("Step 2 & 3: AI Extraction, Edit & Human Approval")
         st.markdown("Review and edit the extracted evidence. **AI output must be treated as draft output, not truth.** Human approval is required before evidence enters the tracker.")
 
@@ -208,6 +284,7 @@ def main():
                         conf = item.get('confidence', 0)
                         color = "green" if conf > 0.8 else ("orange" if conf > 0.5 else "red")
                         st.markdown(f"AI Confidence: :{color}[{conf*100:.0f}%]")
+                        st.markdown(f"*(AI Reasoning: {item.get('reasoning', 'N/A')})*")
 
                         is_approved = st.checkbox("Approve", key=f"approve_{item['id']}")
                         if is_approved:
@@ -219,7 +296,7 @@ def main():
                             "Edit Content:",
                             value=item['content'],
                             key=f"edit_content_{item['id']}",
-                            height=68
+                            height=85
                         )
                         edited_content_map[item['id']] = edited_content
 
@@ -243,9 +320,10 @@ def main():
                         st.success(f"Saved {len(approved_ids)} items to Evidence Tracker!")
                     else:
                         st.warning("No items selected for approval.")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        st.divider()
         if st.session_state['evidence_tracker']:
+            st.markdown('<div class="glass-container">', unsafe_allow_html=True)
             st.header("Evidence Tracker")
             for e in st.session_state['evidence_tracker']:
                 st.write(f"- [{e['category']}] {e['content']}")
@@ -264,8 +342,9 @@ def main():
                     file_name="evidence_tracker.json",
                     mime="application/json"
                 )
+            st.markdown('</div>', unsafe_allow_html=True)
 
-            st.divider()
+            st.markdown('<div class="glass-container">', unsafe_allow_html=True)
             st.header("Step 4 & 5: Report Generation & QA")
             if st.button("Generate Donor Report Draft"):
                 report = generate_report(st.session_state['evidence_tracker'])
@@ -292,6 +371,7 @@ def main():
                     file_name="donor_report_draft.txt",
                     mime="text/plain"
                 )
+            st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()

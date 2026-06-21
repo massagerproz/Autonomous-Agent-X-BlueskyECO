@@ -43,5 +43,10 @@ pytest clear_climate_os/test_app.py
 - Included sample data and tests for easy demo execution.
 
 ## UI & UX Enhancements
-- Includes custom CSS injecting Framer-like motion animations.
-- Features microinteractions such as button hover scaling and subtle pulsing alerts for QA flagging, improving overall user experience.
+- **Glassmorphism UI**: Uses advanced CSS injections to render sleek translucent panels and backdrop blurs, elevating the standard Streamlit interface.
+- **Motion Design**: Includes custom CSS injecting Framer-like staggered fade-in animations for complex forms and layout groups.
+- **Microinteractions**: Features button hover scaling and subtle pulsating alerts for QA flagging, dramatically improving overall user experience.
+
+## AI Feature Enhancements
+- AI extractions now include **Confidence Scores** (with UI color coding) and **Chain-of-Thought Reasoning** transparently shown to the user.
+- Expanded extraction schema captures comprehensive project data, including Activities, Risks, Decisions, Stakeholder Inputs, and Deadlines.
