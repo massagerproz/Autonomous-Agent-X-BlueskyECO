@@ -4,9 +4,17 @@
     {
       "src": "clear_climate_os/app.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "api/edge_ai.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
+    {
+      "src": "/api/edge_ai",
+      "dest": "api/edge_ai.py"
+    },
     {
       "src": "/(.*)",
       "dest": "clear_climate_os/app.py"
