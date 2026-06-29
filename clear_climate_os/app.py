@@ -1,5 +1,7 @@
 import streamlit as st
 import json
+from pgvector_mock import MockPGVector
+from api.edge_ai import enhance_report
 
 def inject_custom_css():
     """Injects custom CSS for Glassmorphism UI and Staggered Animations."""
@@ -94,6 +96,7 @@ def inject_custom_css():
         </style>
     """, unsafe_allow_html=True)
 
+@st.cache_data
 def mock_ai_extract(text):
     """Mock AI extraction for demo purposes with confidence scores and reasoning"""
     evidence = []
@@ -246,6 +249,21 @@ def main():
     if 'extracted_evidence' not in st.session_state:
         st.session_state['extracted_evidence'] = []
 
+    # Historical Context Search (RAG) Section
+    st.markdown('<div class="glass-container">', unsafe_allow_html=True)
+    st.header("Historical Context Search (RAG)")
+    rag_query = st.text_input("Search historical project knowledge base for context:")
+    if st.button("Search Historical Data"):
+        if rag_query:
+            vector_db = MockPGVector()
+            results = vector_db.similarity_search(rag_query)
+            st.write("### Top Similar Historical Records:")
+            for r in results:
+                st.info(f"**[{r['category']}] {r['project_name']} (Relevance: {r['relevance_score']}):**\n\n{r['content']}")
+        else:
+            st.warning("Please enter a query.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('<div class="glass-container">', unsafe_allow_html=True)
     st.header("Step 1: Input Meeting Notes or Updates")
     notes_input = st.text_area("Paste meeting notes, activity updates, or stakeholder inputs here:", height=150)
@@ -355,6 +373,11 @@ def main():
 
             if st.session_state.get('draft_report'):
                 st.markdown(st.session_state['draft_report'])
+
+                if st.button("✨ Enhance Report with Edge AI"):
+                    enhanced = enhance_report(st.session_state['draft_report'])
+                    st.session_state['draft_report'] = enhanced
+                    st.rerun()
 
                 if st.session_state.get('qa_flags'):
                      st.error("### QA Review Alerts")
