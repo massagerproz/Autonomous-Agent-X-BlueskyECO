@@ -260,6 +260,15 @@ def main():
             st.write("### Top Similar Historical Records:")
             for r in results:
                 st.info(f"**[{r['category']}] {r['project_name']} (Relevance: {r['relevance_score']}):**\n\n{r['content']}")
+
+            if results:
+                results_json = json.dumps(results, indent=2)
+                st.download_button(
+                    label="Download Context Data (JSON)",
+                    data=results_json,
+                    file_name="rag_context_results.json",
+                    mime="application/json"
+                )
         else:
             st.warning("Please enter a query.")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -394,6 +403,21 @@ def main():
                     file_name="donor_report_draft.txt",
                     mime="text/plain"
                 )
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        # Mock Analytics Dashboard
+        if st.session_state.get('evidence_tracker'):
+            st.markdown('<div class="glass-container">', unsafe_allow_html=True)
+            st.header("Project Analytics & Insights")
+            col1, col2 = st.columns(2)
+
+            num_approved = len(st.session_state['evidence_tracker'])
+            with col1:
+                st.metric(label="Total Approved Evidence Items", value=num_approved, delta="Verified")
+
+            num_flags = len(st.session_state.get('qa_flags', []))
+            with col2:
+                st.metric(label="Total QA Flags Detected", value=num_flags, delta="Needs Review" if num_flags > 0 else "-All Clear", delta_color="inverse")
             st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
