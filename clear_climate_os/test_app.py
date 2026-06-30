@@ -51,3 +51,23 @@ def test_qa_review():
     report_without_claim = "Just regular text."
     flags = qa_review(report_without_claim)
     assert len(flags) == 0
+
+from pgvector_mock import MockPGVector
+from api.edge_ai import enhance_report
+
+def test_similarity_search():
+    vector_db = MockPGVector()
+    results = vector_db.similarity_search("delay in installation")
+    assert len(results) > 0
+    assert any("delay" in r['content'].lower() for r in results)
+
+def test_enhance_report():
+    draft = "This is a basic draft report."
+    enhanced = enhance_report(draft)
+    assert "🌟 AI Enhanced Donor Report 🌟" in enhanced
+    assert draft in enhanced
+
+def test_enhance_report_empty():
+    draft = "No evidence available to generate report."
+    enhanced = enhance_report(draft)
+    assert enhanced == draft
