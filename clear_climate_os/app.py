@@ -352,17 +352,49 @@ def main():
         if st.session_state['evidence_tracker']:
             st.markdown('<div class="glass-container">', unsafe_allow_html=True)
             st.header("Evidence Tracker")
-            for e in st.session_state['evidence_tracker']:
-                st.write(f"- [{e['category']}] {e['content']}")
 
+            # Get unique categories from the tracker
+            categories = list(set([e['category'] for e in st.session_state['evidence_tracker']]))
+
+            # Add a multiselect for filtering
+            selected_categories = st.multiselect(
+                "Filter by Category",
+                options=categories,
+                default=categories,
+                help="Select categories to view specific evidence items"
+            )
+
+            # Apply filter
+            filtered_evidence = [e for e in st.session_state['evidence_tracker'] if e['category'] in selected_categories]
+
+            if not filtered_evidence:
+                st.info("No evidence items match the selected filters.")
+            else:
+                for e in filtered_evidence:
+                    col_ev, col_del = st.columns([5, 1])
+                    with col_ev:
+                        st.write(f"- [{e['category']}] {e['content']}")
+                    with col_del:
+                        if st.button("Delete", key=f"delete_tracker_{e['id']}"):
+                            st.session_state['evidence_tracker'] = [item for item in st.session_state['evidence_tracker'] if item['id'] != e['id']]
+                            # Update the report and QA flags if any evidence is deleted
+                            if st.session_state['draft_report']:
+                                report = generate_report(st.session_state['evidence_tracker'])
+                                flags = qa_review(report)
+                                st.session_state['draft_report'] = report
+                                st.session_state['qa_flags'] = flags
+                            st.rerun()
+
+            st.divider()
             col_clear, col_json = st.columns(2)
             with col_clear:
                 if st.button("Clear Evidence Tracker"):
                     st.session_state['evidence_tracker'] = []
                     st.session_state['draft_report'] = None
+                    st.session_state['qa_flags'] = []
                     st.rerun()
             with col_json:
-                tracker_json = json.dumps(st.session_state['evidence_tracker'], indent=2)
+                tracker_json = json.dumps(filtered_evidence, indent=2)
                 st.download_button(
                     label="Download Tracker Data (JSON)",
                     data=tracker_json,
